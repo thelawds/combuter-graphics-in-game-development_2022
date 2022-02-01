@@ -1,6 +1,6 @@
 # Computer graphics in Game development course
 
-This repo contains a template for Computer graphics in Game development labs (spring 2022)
+Solutions for assignments for Computer Graphics in Game Development Course taught in Innopolis University in 2022
 
 ## Pre-requirements
 
