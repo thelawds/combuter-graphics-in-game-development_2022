@@ -33,62 +33,64 @@ namespace cg
 		size_t stride;
 	};
 	template<typename T>
-	inline resource<T>::resource(size_t size)
-	{
-		THROW_ERROR("Not implemented yet");
-	}
+	inline resource<T>::resource(size_t size) : data(size), stride(0)
+	{}
+
 	template<typename T>
-	inline resource<T>::resource(size_t x_size, size_t y_size)
-	{
-		THROW_ERROR("Not implemented yet");
-	}
+	inline resource<T>::resource(size_t x_size, size_t y_size) : stride(x_size), data(x_size * y_size)
+	{}
+
 	template<typename T>
-	inline resource<T>::~resource()
-	{
-	}
+	inline resource<T>::~resource() = default;
+
 	template<typename T>
 	inline const T* resource<T>::get_data()
 	{
-		THROW_ERROR("Not implemented yet");
-		return nullptr;
+		return data.data();
 	}
+
 	template<typename T>
 	inline T& resource<T>::item(size_t item)
 	{
-		THROW_ERROR("Not implemented yet");
+		return data[item];
 	}
+
 	template<typename T>
 	inline T& resource<T>::item(size_t x, size_t y)
 	{
-		THROW_ERROR("Not implemented yet");
+		return data[x + y * stride];
 	}
+
 	template<typename T>
 	inline size_t resource<T>::get_size_in_bytes() const
 	{
-		THROW_ERROR("Not implemented yet");
+		return data.size() * item_size;
 	}
+
 	template<typename T>
 	inline size_t resource<T>::get_number_of_elements() const
 	{
-		THROW_ERROR("Not implemented yet");
+		return data.size();
 	}
 
 	template<typename T>
 	inline size_t resource<T>::get_stride() const
 	{
-		THROW_ERROR("Not implemented yet");
+		return stride;
 	}
 
 	struct color
 	{
 		static color from_float3(const float3& in)
 		{
-			THROW_ERROR("Not implemented yet");
-		};
+			return color{in.x, in.y, in.z};
+		}
+
 		float3 to_float3() const
 		{
-			THROW_ERROR("Not implemented yet");
+			return float3{r, g, b};
 		}
+
 		float r;
 		float g;
 		float b;
@@ -98,16 +100,28 @@ namespace cg
 	{
 		static unsigned_color from_color(const color& color)
 		{
-			THROW_ERROR("Not implemented yet");
+			return unsigned_color{
+					static_cast<unsigned char>(color.r * 255),
+					static_cast<unsigned char>(color.g * 255),
+					static_cast<unsigned char>(color.b * 255)};
 		};
+
 		static unsigned_color from_float3(const float3& color)
 		{
-			THROW_ERROR("Not implemented yet");
+			return unsigned_color{
+					static_cast<unsigned char>(color.x * 255),
+					static_cast<unsigned char>(color.y * 255),
+					static_cast<unsigned char>(color.z * 255)};
 		}
+
 		float3 to_float3() const
 		{
-			THROW_ERROR("Not implemented yet");
+			return float3{
+					static_cast<float>(r / 255.),
+					static_cast<float>(g / 255.),
+					static_cast<float>(b / 255.)};
 		};
+
 		unsigned char r;
 		unsigned char g;
 		unsigned char b;
@@ -138,6 +152,37 @@ namespace cg
 
 		float u;
 		float v;
+
+		vertex operator+(const vertex& other) const
+		{
+			vertex result{};
+			result.x = this->x + other.x;
+			result.y = this->y + other.y;
+			result.z = this->z + other.z;
+			result.nx = this->nx + other.nx;
+			result.ny = this->ny + other.ny;
+			result.nz = this->nz + other.nz;
+
+			// TODO: Add remaining parameters
+			// ----
+			return result;
+		}
+
+		vertex operator*(const float value) const
+		{
+			vertex result{};
+			result.x = this->x * value;
+			result.y = this->y * value;
+			result.z = this->z * value;
+			result.nx = this->nx * value;
+			result.ny = this->ny * value;
+			result.nz = this->nz * value;
+
+			// TODO: Add remaining parameters
+			// ----
+
+			return result;
+		}
 	};
 
 }// namespace cg
