@@ -16,7 +16,6 @@ namespace cg::renderer
 
 	protected:
 		std::shared_ptr<cg::resource<cg::unsigned_color>> render_target;
-
 		std::shared_ptr<cg::renderer::raytracer<cg::vertex, cg::unsigned_color>> raytracer;
 		std::shared_ptr<cg::renderer::raytracer<cg::vertex, cg::unsigned_color>> shadow_raytracer;
 
